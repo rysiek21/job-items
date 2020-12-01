@@ -1,2 +1,2 @@
-# job-items
-Fivem lua script which adds menu for job items
+# About job-items:
+Job Items Menu script for ESX V1 Final - Made by rysiek21
