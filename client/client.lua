@@ -6,6 +6,7 @@ local Job = nil
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
 AddEventHandler('onClientResourceStart', function (resourceName)
+    Citizen.Wait(5000)
     ESX.TriggerServerCallback('job_items:getJob', function(playersJob)
         Job = playersJob
     end)
