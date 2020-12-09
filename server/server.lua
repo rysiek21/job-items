@@ -2,13 +2,6 @@ ESX = nil
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
-ESX.RegisterServerCallback('job_items:getJob', function(source, cb)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    local playersJob = xPlayer.getJob()
-
-    cb(playersJob.name)
-end)
-
 RegisterServerEvent("job_items:giveWeapon")
 AddEventHandler("job_items:giveWeapon", function(weapon, ammo)
     local haveThisWeapon = false

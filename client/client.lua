@@ -3,13 +3,21 @@ local useDistance = 1
 local e_key = 38
 local Job = nil
 
-TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+Citizen.CreateThread(function()
+	while ESX == nil do
+		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+		Citizen.Wait(0)
+	end
 
-AddEventHandler('onClientResourceStart', function (resourceName)
-    Citizen.Wait(5000)
-    ESX.TriggerServerCallback('job_items:getJob', function(playersJob)
-        Job = playersJob
-    end)
+	while ESX.GetPlayerData().job == nil do
+		Citizen.Wait(10)
+	end
+
+	ESX.PlayerData = ESX.GetPlayerData()
+end)
+RegisterNetEvent('esx:setJob')
+AddEventHandler('esx:setJob', function(job)
+	ESX.PlayerData.job = job
 end)
 
 CreateThread(function()
@@ -17,7 +25,7 @@ CreateThread(function()
 		Citizen.Wait(0)
         local pedCoords = GetEntityCoords(PlayerPedId())
         for i=1, #Config.Locations, 1 do
-            if Job == Config.Locations[i].job then
+            if ESX.PlayerData.job.name == Config.Locations[i].job then
                 DrawMarker(25, Config.Locations[i].x, Config.Locations[i].y, Config.Locations[i].z, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, 2.0, 2.0, 2.0, 255, 128, 0, 50, false, true, 2, nil, nil, false)
                 if Vdist2(GetEntityCoords(PlayerPedId(), false), vector3(Config.Locations[i].x, Config.Locations[i].y, Config.Locations[i].z)) < useDistance then
                     alert("~r~Naciśnij ~INPUT_PICKUP~ aby użyć szafki")
